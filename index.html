@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Radio Clik Chile - En Vivo</title>
+
+    <meta name="description" content="Escucha Radio Clik Chile en vivo por Internet. Música, entretenimiento y compañía las 24 horas.">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #111111, #222222);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .radio-container {
+            width: 100%;
+            max-width: 500px;
+            background: #181818;
+            border-radius: 25px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+
+        .logo {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: #e50914;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 35px;
+            font-weight: bold;
+            box-shadow: 0 0 30px rgba(229,9,20,0.5);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #cccccc;
+            margin-bottom: 25px;
+        }
+
+        .live {
+            display: inline-block;
+            background: #e50914;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .player {
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        audio {
+            width: 100%;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            background: #333333;
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            transform: scale(1.02);
+            background: #e50914;
+        }
+
+        .whatsapp {
+            background: #25D366;
+        }
+
+        .share {
+            background: #444444;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+
+        footer {
+            margin-top: 30px;
+            color: #888888;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="radio-container">
+
+        <div class="logo">
+            RC
+        </div>
+
+        <h1>Radio Clik Chile</h1>
+
+        <p class="subtitle">
+            Tu compañía estés donde estés
+        </p>
+
+        <div class="live">
+            🔴 EN VIVO
+        </div>
+
+        <div class="player">
+
+            <audio controls preload="none">
+                <source src="https://uk14freenew.listen2myradio.com/live.mp3?typeportmount=s2_20813_stream_660750741" type="audio/mpeg">
+
+                Tu navegador no puede reproducir esta radio.
+            </audio>
+
+        </div>
+
+        <a class="button whatsapp"
+           href="https://wa.me/56941779020"
+           target="_blank">
+            📱 Contactar por WhatsApp
+        </a>
+
+        <button class="button share" onclick="compartirRadio()">
+            🔗 Compartir Radio Clik
+        </button>
+
+        <footer>
+            © 2026 Radio Clik Chile
+            <br>
+            Radio online por Internet
+        </footer>
+
+    </div>
+
+    <script>
+        function compartirRadio() {
+
+            if (navigator.share) {
+
+                navigator.share({
+                    title: 'Radio Clik Chile',
+                    text: 'Escucha Radio Clik Chile en vivo',
+                    url: window.location.href
+                });
+
+            } else {
+
+                navigator.clipboard.writeText(window.location.href);
+
+                alert('¡Enlace de Radio Clik copiado!');
+
+            }
+        }
+    </script>
+
+</body>
+</html>

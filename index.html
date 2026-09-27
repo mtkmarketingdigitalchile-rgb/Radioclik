@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -71,11 +72,26 @@
 
         .player {
             width: 100%;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
         audio {
             width: 100%;
+            border-radius: 10px;
+        }
+
+        .status {
+            margin: 12px 0 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .status.connected {
+            color: #25D366;
+        }
+
+        .status.error {
+            color: #ff5555;
         }
 
         .button {
@@ -135,17 +151,24 @@
 
         <div class="player">
 
-            <audio controls preload="none">
-                <source src="https://uk14freenew.listen2myradio.com/live.mp3?typeportmount=s2_20813_stream_660750741" type="audio/mpeg">
-
+            <audio id="radioPlayer" controls preload="none">
+                <source
+                    src="https://uk19freenew.listen2myradio.com/live.mp3?typeportmount=s2_34828_stream_210725583"
+                    type="audio/mpeg">
+                
                 Tu navegador no puede reproducir esta radio.
             </audio>
 
         </div>
 
+        <div id="status" class="status">
+            ⏸️ Radio detenida. Presiona ▶ para escuchar.
+        </div>
+
         <a class="button whatsapp"
            href="https://wa.me/56941779020"
-           target="_blank">
+           target="_blank"
+           rel="noopener noreferrer">
             📱 Contactar por WhatsApp
         </a>
 
@@ -162,13 +185,94 @@
     </div>
 
     <script>
+
+        const radioPlayer = document.getElementById("radioPlayer");
+        const status = document.getElementById("status");
+
+        const streamURL =
+            "https://uk19freenew.listen2myradio.com/live.mp3?typeportmount=s2_34828_stream_210725583";
+
+        let reconnectTimer = null;
+
+        function actualizarEstado(texto, clase = "") {
+            status.textContent = texto;
+            status.className = "status " + clase;
+        }
+
+        radioPlayer.addEventListener("play", function () {
+            actualizarEstado(
+                "🟢 Conectando con Radio Clik Chile...",
+                "connected"
+            );
+        });
+
+        radioPlayer.addEventListener("playing", function () {
+            actualizarEstado(
+                "🟢 Radio Clik Chile está transmitiendo en vivo",
+                "connected"
+            );
+        });
+
+        radioPlayer.addEventListener("waiting", function () {
+            actualizarEstado(
+                "⏳ Conectando con la señal...",
+                ""
+            );
+        });
+
+        radioPlayer.addEventListener("pause", function () {
+            actualizarEstado(
+                "⏸️ Radio detenida. Presiona ▶ para escuchar."
+            );
+        });
+
+        radioPlayer.addEventListener("error", function () {
+
+            actualizarEstado(
+                "🔴 No se pudo conectar. Reintentando...",
+                "error"
+            );
+
+            programarReconexión();
+        });
+
+        radioPlayer.addEventListener("stalled", function () {
+
+            actualizarEstado(
+                "⚠️ Señal temporalmente interrumpida. Reconectando...",
+                "error"
+            );
+
+            programarReconexión();
+        });
+
+        function programarReconexión() {
+
+            if (reconnectTimer) {
+                clearTimeout(reconnectTimer);
+            }
+
+            reconnectTimer = setTimeout(function () {
+
+                radioPlayer.src = streamURL;
+                radioPlayer.load();
+
+                radioPlayer.play().catch(function () {
+                    actualizarEstado(
+                        "▶ Presiona reproducir para volver a escuchar."
+                    );
+                });
+
+            }, 5000);
+        }
+
         function compartirRadio() {
 
             if (navigator.share) {
 
                 navigator.share({
-                    title: 'Radio Clik Chile',
-                    text: 'Escucha Radio Clik Chile en vivo',
+                    title: "Radio Clik Chile",
+                    text: "Escucha Radio Clik Chile en vivo",
                     url: window.location.href
                 });
 
@@ -176,11 +280,13 @@
 
                 navigator.clipboard.writeText(window.location.href);
 
-                alert('¡Enlace de Radio Clik copiado!');
+                alert("¡Enlace de Radio Clik copiado!");
 
             }
         }
+
     </script>
 
 </body>
 </html>
+```
